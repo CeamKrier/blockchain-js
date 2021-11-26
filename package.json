@@ -1,0 +1,14 @@
+{
+    "name": "blockchain-js",
+    "version": "1.0.0",
+    "description": "A basic blockchain that uses a proof-of-work consensus algorithm written in javascript",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "Emre Çakır",
+    "license": "MIT",
+    "dependencies": {
+        "crypto": "^1.0.1"
+    }
+}
