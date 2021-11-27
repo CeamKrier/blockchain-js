@@ -1,3 +1,11 @@
 {
-    "nullHash": "0000000000000000000000000000000000000000"
+    "nullHash": "0000000000000000000000000000000000000000",
+    "transactionState": {
+        "created": 0,
+        "signed": 1,
+        "queued": 2,
+        "processing": 3,
+        "failed": 4,
+        "confirmed": 5
+    }
 }

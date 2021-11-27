@@ -1,5 +1,5 @@
 const Block = require("./block");
-const { transaction } = require("./transaction");
+const { createTransaction } = require("./transaction");
 const Constants = require("./constants.json");
 
 const chain = [];
@@ -8,7 +8,12 @@ let CHAIN_MINING_DIFFICULITY = 3;
 exports.initialize = ownerAddress => {
     if (!chain.length) {
         // Pre-mine some amount of currency
-        const genesisBlock = Block.generate([transaction(Constants.nullHash, ownerAddress, 100)]);
+        // create tx
+        // sign and send to blockchain
+        // validate it on node
+        // insert validated tx to a block
+        // try to mine the block
+        const genesisBlock = Block.generate([createTransaction(Constants.nullHash, ownerAddress, 100)]);
         chain.push(Block.mine(genesisBlock, CHAIN_MINING_DIFFICULITY));
     }
 };

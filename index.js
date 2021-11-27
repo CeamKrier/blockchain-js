@@ -1,9 +1,14 @@
 const { addBlock, getLastBlock, initialize, isChainAltered } = require("./blockchain");
-const { transaction } = require("./transaction");
-const { generateHash, sleep } = require("./utils");
+const { createTransaction } = require("./transaction");
+const { generateHash, sleep, generateMnemonic } = require("./utils");
+const { createWallet, getWalletKeyPair } = require("./wallet");
 
 const ignite = async () => {
-    const ownerAddress = generateHash("hello");
+    const mnemonic = generateMnemonic();
+    const keyPair = getWalletKeyPair(mnemonic);
+
+    console.log("mnemonic:  ", mnemonic);
+    const ownerAddress = createWallet(mnemonic);
 
     initialize(ownerAddress);
 
@@ -11,7 +16,7 @@ const ignite = async () => {
 
     await sleep(1000);
 
-    const txs = [transaction("aaa", "bbb", 10), transaction("c", "ddd", 5)];
+    const txs = [createTransaction("aaa", "bbb", 10), createTransaction("c", "ddd", 5)];
     addBlock(txs);
 
     console.log("Second block", getLastBlock());

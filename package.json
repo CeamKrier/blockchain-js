@@ -9,6 +9,9 @@
     "author": "Emre Çakır",
     "license": "MIT",
     "dependencies": {
-        "crypto": "^1.0.1"
+        "base58-js": "^1.0.0",
+        "bip39": "^3.0.4",
+        "crypto": "^1.0.1",
+        "elliptic": "^6.5.4"
     }
 }
