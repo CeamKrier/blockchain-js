@@ -12,6 +12,10 @@ exports.generateKeyPair = mnemonic => {
     return this.getKeyGenerator().keyFromSecret(this.mnemonicToPrivateKey(mnemonic));
 };
 
+exports.getPublicFromPrivateKey = privateKey => {
+    return this.getKeyGenerator().keyFromSecret(privateKey).getPublic();
+};
+
 exports.generateMnemonic = () => {
     // 128 returns 13 word passphrase
     // 256 returns 25 word passphrase

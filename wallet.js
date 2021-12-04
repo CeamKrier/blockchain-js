@@ -10,7 +10,7 @@ exports.getWallet = address => addresses[address];
  * @param {*} publicKey
  * @returns walletAddress
  */
-const getWalletAddress = publicKey => {
+exports.getWalletAddress = publicKey => {
     // Steps to obtain wallet address
     // 1- hash public key with sha256 algorithm
     const sha256hash = generateHash(publicKey);
@@ -42,10 +42,13 @@ exports.createWallet = mnemonic => {
 
     const address = getWalletAddress(publicKey);
 
+    // hold just the tx hash and block id on transactions
     if (!this.getWallet(address)) {
         addresses[address] = {
-            balance: 0,
-            transactions: []
+            transactions: [],
+            utxo: {
+                value: 0
+            }
         };
     }
 
@@ -60,4 +63,25 @@ exports.getWalletPrivateKey = mnemonic => {
     const walletAddress = getWalletAddress(publicKey);
 
     return this.getWallet(walletAddress) ? privateKey : undefined;
+};
+
+exports.getWalletBalance = ({ address, privateKey, publicKey }) => {
+    let walletAddress = address;
+
+    if (privateKey || publicKey) {
+        const publicKey = privateKey ? getPublicFromPrivateKey(privateKey) : publicKey;
+        walletAddress = getWalletAddress(publicKey);
+    }
+
+    // each time wallet send some amount of value to another address, it creates another tx to itself
+    // this way remaineder value can be traced easily
+    // Ref: https://www.investopedia.com/terms/u/utxo.asp
+
+    const { utxo } = getWallet(walletAddress);
+
+    if (!utxo) {
+        throw Error("Recepient address does not exist", walletAddress);
+    }
+
+    return utxo;
 };

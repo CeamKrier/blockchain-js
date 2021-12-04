@@ -1,11 +1,23 @@
 {
-    "nullHash": "0000000000000000000000000000000000000000",
+    "coinbase": "COINBASE_NO_ADDRESS",
     "transactionState": {
         "created": 0,
         "signed": 1,
         "queued": 2,
         "processing": 3,
         "failed": 4,
-        "confirmed": 5
+        "verified": 5
+    },
+    "transactionType": {
+        "mintToken": 0,
+        "regular": 1,
+        "unspentTxOutput": 2
+    },
+    "transactionFailReason": {
+        "insufficient_funds_before_sign": "Wallet balance dont have enough funds to send this transaction",
+        "signature_failed_to_verify": "Your signature could not verified"
+    },
+    "miningEvent": {
+        "newBlockFound": "newBlockFound"
     }
 }
