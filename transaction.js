@@ -4,10 +4,14 @@ const { getWalletBalance } = require("./wallet");
 
 const mempool = {};
 
+exports.getTransaction = txHash => mempool[txHash];
+exports.updateTransactionState = (txHash, state) => (mempool[txHash] = { ...mempool[txHash], meta: { ...mempool[txHash].meta, state } });
+
 exports.createTransaction = ({ from, to, value, privateKey }) => {
     const transaction = {
         meta: {},
         data: {
+            timestamp: Date.now().toString(),
             from,
             to,
             value
@@ -32,7 +36,7 @@ exports.createTransaction = ({ from, to, value, privateKey }) => {
         utxo.value -= value;
     } else {
         transaction.meta = {
-            state: transactionState.verified,
+            state: transactionState.minable,
             type: transactionType.mintToken
         };
 
@@ -40,7 +44,7 @@ exports.createTransaction = ({ from, to, value, privateKey }) => {
     }
 
     mempool[txHash] = transaction;
-
+    console.log("Tx count in pool", Object.keys(mempool).length);
     return transaction;
 };
 
@@ -55,8 +59,8 @@ exports.validateTransaction = transaction => {
     const isValid = getKeyGenerator().verify(txHash, transaction.meta.signature);
 
     if (isValid) {
-        // Mark tx as verified
-        transaction.meta.state = transactionState.verified;
+        // Mark tx as minable
+        transaction.meta.state = transactionState.minable;
 
         // update record, this will be added to a block by a miner
         mempool[txHash] = transaction;
@@ -71,15 +75,25 @@ exports.validateTransaction = transaction => {
         transaction.meta.state = transactionState.failed;
         transaction.meta.failReasons = failReasons;
     }
-
+    console.log("mempool", mempool);
     return false;
 };
 
 exports.getUnverifiedTransactions = () => {
     // @TODO: add tx fee, sort pool for tx fee
-    return Object.keys(mempool).filter(tx => mempool[tx].meta.state === transactionState.signed);
+    return Object.keys(mempool)
+        .filter(tx => mempool[tx].meta.state === transactionState.signed)
+        .map(hash => mempool[hash]);
+};
+
+exports.getMinableTransactions = () => {
+    return Object.keys(mempool)
+        .filter(tx => mempool[tx].meta.state === transactionState.minable)
+        .map(hash => mempool[hash]);
 };
 
 exports.getVerifiedTransactions = () => {
-    return Object.keys(mempool).filter(tx => mempool[tx].meta.state === transactionState.verified);
+    return Object.keys(mempool)
+        .filter(tx => mempool[tx].meta.state === transactionState.verified)
+        .map(hash => mempool[hash]);
 };

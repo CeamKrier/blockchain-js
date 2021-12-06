@@ -3,10 +3,10 @@
     "transactionState": {
         "created": 0,
         "signed": 1,
-        "queued": 2,
-        "processing": 3,
-        "failed": 4,
-        "verified": 5
+        "minable": 3,
+        "includedToBlock": 4,
+        "failed": 5,
+        "verified": 6
     },
     "transactionType": {
         "mintToken": 0,

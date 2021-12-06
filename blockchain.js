@@ -1,5 +1,5 @@
 const EventEmitter = require("events");
-const Block = require("./block");
+// const Block = require("./block");
 const { createTransaction } = require("./transaction");
 const Constants = require("./constants.json");
 const { initializeMiner } = require("./miner");
@@ -15,12 +15,7 @@ let MAX_SUPPLY = 42000000;
 let REWARD_PER_BLOCK = 50 / EPOCH;
 let MINER_COUNT = 0;
 
-exports.initialize = ownerAddress => {
-    if (!chain.length) {
-        // const genesisBlock = Block.generate([createTransaction(Constants.nullHash, ownerAddress, 100)]);
-        chain.push(Block.mine(genesisBlock, CHAIN_MINING_DIFFICULITY));
-    }
-};
+exports.initialize = () => {};
 
 exports.getMiningDifficulty = () => CHAIN_MINING_DIFFICULITY;
 
@@ -28,27 +23,27 @@ exports.getMiningEventEmitter = () => miningEventEmitter;
 
 exports.getLastBlock = () => (chain.length ? chain[chain.length - 1] : undefined);
 
-exports.isChainAltered = () => {
-    if (chain.length === 1) {
-        return true;
-    }
+// exports.isChainAltered = () => {
+//     if (chain.length === 1) {
+//         return true;
+//     }
 
-    return chain.some((block, index) => {
-        // Starting from the second block
-        if (index > 0) {
-            return !Block.validate(block);
-        }
-    });
-};
+//     return chain.some((block, index) => {
+//         // Starting from the second block
+//         if (index > 0) {
+//             return !Block.validate(block);
+//         }
+//     });
+// };
 
-exports.addBlock = transactions => {
-    const block = Block.generate(transactions);
-    block.previousHash = this.getLastBlock().currentHash;
+// exports.addBlock = transactions => {
+//     const block = Block.generate(transactions);
+//     block.previousHash = this.getLastBlock().currentHash;
 
-    const minedBlock = Block.mine(block, CHAIN_MINING_DIFFICULITY);
+//     const minedBlock = Block.mine(block, CHAIN_MINING_DIFFICULITY);
 
-    chain.push(minedBlock);
-};
+//     chain.push(minedBlock);
+// };
 
 exports.rewardBlockMiner = minerAddress => {
     if (TOTAL_SUPPLY + REWARD_PER_BLOCK <= MAX_SUPPLY) {

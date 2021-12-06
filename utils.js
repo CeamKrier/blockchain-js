@@ -13,7 +13,7 @@ exports.generateKeyPair = mnemonic => {
 };
 
 exports.getPublicFromPrivateKey = privateKey => {
-    return this.getKeyGenerator().keyFromSecret(privateKey).getPublic();
+    return this.getKeyGenerator().keyFromSecret(privateKey).getPublic("hex");
 };
 
 exports.generateMnemonic = () => {
